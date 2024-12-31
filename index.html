@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <link rel="stylesheet" href="style.css" />
+
+        <link
+            href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+            rel="stylesheet"
+        />
+    </head>
+    <body>
+        <h1>Testo Qr code scanner</h1>
+
+        <div class="canvas-container">
+            <canvas class="camera" id="canvas" width="500" height="500">
+            </canvas>
+            <div class="qr-code">
+                <hr />
+            </div>
+            <canvas id="canvastest" width="400" height="300"> </canvas>
+        </div>
+        <button class="scan-button" id="scan-button">scan...</button>
+        <div>
+            <video
+                class="camera"
+                id="video"
+                width="500"
+                height="500"
+                muted
+                autoplay
+                playsinline
+            >
+                Video stream not available.
+            </video>
+        </div>
+        <hr />
+        <div class="result-container">
+            <div id="debugInfo"></div>
+        </div>
+
+        <script src="node_modules/jsqr/dist/jsQR.js"></script>
+        <script src="node_modules/pako/dist/pako.min.js"></script>
+        <script src="index.js"></script>
+    </body>
+</html>

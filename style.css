@@ -1,0 +1,63 @@
+.montserrat-<uniquifier > {
+    font-family: "Montserrat", serif;
+    font-optical-sizing: auto;
+    font-weight: <weight>;
+    font-style: normal;
+}
+* {
+    font-family: "Montserrat", serif;
+}
+h1 {
+    font-size: 16px;
+}
+.qr-code {
+    background-color: green;
+    opacity: 0.2;
+    position: absolute;
+    margin-top: 3%;
+    margin-left: 3%;
+    width: 200px;
+    height: 200px;
+    border: 2px solid green;
+}
+.qr-code hr {
+    position: absolute;
+    width: 120%;
+    left: -10%;
+    top: 40%;
+    color: green;
+}
+.canvas-container {
+    width: 90vw;
+    margin: 20px;
+    display: flex;
+    justify-self: center;
+    align-self: center;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+    align-content: center;
+}
+
+/* canvas {
+    border: 1px solid black;
+} */
+.camera {
+    display: none;
+}
+.result-container {
+    display: flex;
+    width: 100vw;
+    overlay: hidden;
+}
+.scan-button {
+    margin-left: 38%;
+    font-weight: 800;
+    border: none;
+    background-color: blueviolet;
+    color: white;
+    width: 100px;
+    height: 40px;
+    border-radius: 9px;
+    box-shadow: 2px 2px 9px darkslategray;
+}

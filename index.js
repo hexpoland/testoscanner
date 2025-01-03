@@ -6,6 +6,7 @@ const debugInfo = document.querySelector("#debugInfo");
 const video = document.querySelector("#video");
 const scanButton = document.querySelector("#scan-button");
 var jsonresult;
+
 async function dataFromCamera() {
   var resultData1;
   var tracks;
@@ -15,7 +16,14 @@ async function dataFromCamera() {
       audio: false,
       video: {
         facingMode: "enviroment",
-        frameRate: 20,
+        focusMode: "continuous",
+        advanced: [
+          {
+            aspectRatio: 9 / 12, //testy najlepiej wychodz na 9/9  i 9/12
+            frameRate: 20,
+            focusMode: "continuous",
+          },
+        ],
       },
     })
     .then((stream) => {
@@ -43,15 +51,34 @@ async function dataFromCamera() {
         testoData.map((el) => {
           resultData1 = resultData1 + String.fromCharCode(el);
         });
+        jsonresult = JSON.parse(JSON.stringify(resultData1.slice(9)));
 
-        debugInfo.innerHTML = JSON.stringify(resultData1);
+        let result = parseObject(jsonresult);
+        result.map((el) => {
+          let customer = el.customer;
+          let channel = el.channels;
+
+          let p = document.createElement("p");
+          p.append(`City : ${customer.city} \n`);
+          p.append(`Name: ${customer.name} \n`);
+          debugInfo.appendChild(p);
+
+          channel.forEach((el1) => {
+            let p1 = document.createElement("div");
+            p1.append(`${el1.type.name} :  ${el1.values[0].value}`);
+            debugInfo.appendChild(p1);
+            console.log(el1.type.name);
+            console.log(el1.values[0].value);
+          });
+        });
         clearInterval(intervalId);
       }
     }, 100);
     //clearInterval(intervalId);
   });
 }
-dataFromCamera();
+
+//dataFromCamera();
 async function imageDataFromSource(source) {
   const image = Object.assign(new Image(), { src: source });
   await new Promise((resolve) =>
@@ -76,11 +103,58 @@ imageDataFromSource("assets/example2.png").then((e) => {
     testoData.map((el) => {
       resultData = resultData + String.fromCharCode(el);
     });
-    console.log(resultData.slice(9));
+    //console.log(resultData.slice(9));
     jsonresult = JSON.parse(JSON.stringify(resultData.slice(9)));
-    debugInfo.innerHTML = jsonresult;
+    //console.log(jsonresult.length);
+    let result = parseObject(jsonresult);
+    result.map((el) => {
+      let customer = el.customer;
+      let channel = el.channels;
+
+      let p = document.createElement("p");
+      p.append(`City : ${customer.city} \n`);
+      p.append(`Name: ${customer.name} \n`);
+      debugInfo.appendChild(p);
+
+      channel.forEach((el1) => {
+        let p1 = document.createElement("div");
+        p1.append(`${el1.type.name} :  ${el1.values[0].value}`);
+        debugInfo.appendChild(p1);
+        console.log(el1.type.name);
+        console.log(el1.values[0].value);
+      });
+    });
   }
 });
+
 scanButton.addEventListener("click", function () {
   dataFromCamera();
 });
+
+function parseObject(jsonresult1) {
+  var tempBegin = 0;
+  var tempEnd = 0;
+  var temp = 0;
+  var resultObject = [];
+  for (let i = 0; i < jsonresult1.length; i++) {
+    if (jsonresult1.charAt(i).toString() === "{") {
+      if (temp === 0) {
+        tempBegin = i;
+      }
+
+      temp = temp + 1;
+
+      console.log(`Begin at ${tempBegin}`);
+    }
+    if (jsonresult1.charAt(i).toString() === "}") {
+      temp = temp - 1;
+    }
+    if (temp === 0) {
+      tempEnd = i;
+      console.log(`and end at ${tempEnd}`);
+      resultObject.push(JSON.parse(jsonresult1.slice(tempBegin, tempEnd + 1)));
+      i++;
+    }
+  }
+  return resultObject;
+}
